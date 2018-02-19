@@ -57,53 +57,102 @@
               <div class="card events-card">
                 <header class="card-header">
                   <p class="card-header-title">
-                    Capítulo 1
+                    Escena 1: La llegada
                   </p>
                 </header>
-                <div class="card-table">
-                  <div class="content">
-
-                  </div>
+                <div class="card-content">
+                  Era una noche oscura.
                 </div>
+                <footer class="card-footer">
+                  <textarea class="textarea is-info" type="text"></textarea>
+                </footer>
               </div>
             </div>
             <div class="column is-4">
-              <div class="card">
-                <header class="card-header">
-                  <p class="card-header-title">
-                    Personajes
-                  </p>
-                  <a href="#" class="card-header-icon" aria-label="more options">
-                    <span class="icon">
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                  </a>
-                </header>
-                <div class="card-content">
-                  <div class="content">
-                    <div class="control has-icons-left has-icons-right">
-                    </div>
+              <b-collapse class="card">
+                  <div slot="trigger" slot-scope="props" class="card-header">
+                      <p class="card-header-title">
+                          Personajes
+                      </p>
+                      <a class="card-header-icon">
+                          <b-icon
+                              pack="fa"
+                              :icon="props.open ? 'angle-down' : 'angle-up'">
+                          </b-icon>
+                      </a>
                   </div>
-                </div>
-              </div>
-              <div class="card">
-                <header class="card-header">
-                  <p class="card-header-title">
-                    Escena
-                  </p>
-                  <a href="#" class="card-header-icon" aria-label="more options">
-                    <span class="icon">
-                      <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                  </a>
-                </header>
-                <div class="card-content">
-                  <div class="content">
-                    <div class="control has-icons-left has-icons-right">
-                    </div>
+                  <div class="card-content">
+                      <div class="content">
+                        <div class="field">
+                          <b-taginput
+                              v-model="characterTags"
+                              icon="label"
+                              placeholder="Agregar personaje">
+                          </b-taginput>
+                        </div>
+                      </div>
                   </div>
+              </b-collapse>
+
+              <nav class="panel">
+                <p class="panel-heading">
+                  Personajes
+                </p>
+                <div class="panel-block">
+                  <p class="control has-icons-left">
+                    <input class="input is-small" type="text" placeholder="Agregar">
+                  </p>
                 </div>
-              </div>
+                <a class="panel-block is-active">
+                  <span class="panel-icon">
+                    <i class="fas fa-book"></i>
+                  </span>
+                  Jacob Price
+                </a>
+                <a class="panel-block">
+                  <span class="panel-icon">
+                    <i class="fas fa-book"></i>
+                  </span>
+                  Adel
+                </a>
+              </nav>
+              <b-collapse class="card">
+                  <div slot="trigger" slot-scope="props" class="card-header">
+                      <p class="card-header-title">
+                          Escena
+                      </p>
+                      <a class="card-header-icon">
+                          <b-icon
+                              pack="fa"
+                              :icon="props.open ? 'angle-down' : 'angle-up'">
+                          </b-icon>
+                      </a>
+                  </div>
+                  <div class="card-content">
+                      <div class="content">
+                          Tranquilidad
+                      </div>
+                  </div>
+              </b-collapse>
+
+              <b-collapse class="card">
+                  <div slot="trigger" slot-scope="props" class="card-header">
+                      <p class="card-header-title">
+                          Historia
+                      </p>
+                      <a class="card-header-icon">
+                          <b-icon
+                              pack="fa"
+                              :icon="props.open ? 'angle-down' : 'angle-up'">
+                          </b-icon>
+                      </a>
+                  </div>
+                  <div class="card-content">
+                      <div class="content">
+                          Brumas de Aiden
+                      </div>
+                  </div>
+              </b-collapse>
             </div>
           </div>
         </div>
@@ -117,7 +166,7 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      characterTags: ['Jacob Price']
     }
   }
 }
