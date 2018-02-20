@@ -75,14 +75,16 @@
                   <div class="field is-grouped">
                     <p class="control">
                       <a class="button">
-                        Pregunta
+                        Sacar de la bolsa
                       </a>
                     </p>
-                    <p class="control">
-                      <a class="button">
-                        Descripción
-                      </a>
-                    </p>
+                    <div class="select">
+                      <select>
+                        <option>Pistas</option>
+                        <option>Secretos</option>
+                        <option>Encuentros</option>
+                      </select>
+                    </div>
                   </div>
                 </footer>
               </div>
