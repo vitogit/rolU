@@ -64,17 +64,19 @@
                   </p>
                 </header>
                 <div class="card-content">
-                  <p v-for="m in messages">
-                    {{m}}
+                  <p v-for="m in messages" v-html="m">
                   </p>
                 </div>
                 <footer class="card-footer">
-                  <textarea class="textarea is-info" type="text"></textarea>
+                  <textarea  @keyup.enter="addMessage" v-model="newMessage" class="textarea is-info" type="text"></textarea>
                 </footer>
                 <footer class="card-footer" style="padding:10px">
                   <div class="field is-grouped">
                     <p class="control">
-                      <a class="button">
+                      <a @click="addDialog" class="button">
+                        Diálogo
+                      </a>
+                      <a @click="getFromBag" class="button">
                         Sacar de la bolsa
                       </a>
                     </p>
@@ -186,20 +188,55 @@ export default {
   data () {
     return {
       messages: ['Era una noche oscura', 'El pueblo estaba en calma.'],
+      newMessage: '',
       characters: [{name: 'Jacob Price', data: 'Hola soy Jacob'}],
       characterOpen: true,
       isCharacterModalActive: false,
-      currentElement: {}
+      currentElement: {},
+      tempBag: ['Si', 'No', 'Si pero', 'No pero']
     }
   },
   methods: {
     addCharacter(event) {
       let name = event.target.value
+      if (name != '')
+        return
       this.characters.push({name:name, data:''})
+    },
+    addMessage() {
+      if (this.newMessage == '')
+        return
+      this.messages.push(this.newMessage)
+      this.newMessage = ''
+    },
+    addDialog() { //TODO DRY duplicate code
+      if (this.newMessage == '')
+        return
+      let message = this.addTextStyle(this.newMessage, 'dialog')
+      this.messages.push(message)
+      this.newMessage = ''
     },
     openModal(element) {
       this.isCharacterModalActive = true
       this.currentElement = element
+    },
+    getFromBag() {
+      let element = this.tempBag[0]
+      if (this.newMessage != '') {
+        element = this.newMessage +': '+element
+        this.newMessage = ''
+      }
+      let message = this.addTextStyle(element)
+      this.messages.push(message)
+    },
+    addTextStyle(message, type) {
+      
+      if (type == 'dialog') {
+        message = `<span style:'padding:10px' class="is-italic">—${message}</span>`
+      } else {
+        message = `<span class="has-text-primary is-italic has-text-weight-bold is-size-7">${message}</span>`
+      }
+      return message
     }
   }
 }
