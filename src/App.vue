@@ -43,10 +43,10 @@
           <section class="hero is-small">
             <div class="hero-body">
               <div class="container">
-                <h1 class="title">
+                <h1 class="title is-invisible">
                   El pueblo maldito de Aidenville.
                 </h1>
-                <h2 class="subtitle">
+                <h2 class="subtitle is-invisible">
                   Un alcalde sediento de poder, un volcán dormido y un pueblo lleno de secretos.
                 </h2>
               </div>
@@ -70,52 +70,30 @@
             </div>
             <div class="column is-4">
               <b-collapse class="card">
-                  <div slot="trigger" slot-scope="props" class="card-header">
-                      <p class="card-header-title">
-                          Personajes
-                      </p>
-                      <a class="card-header-icon">
-                          <b-icon
-                              pack="fa"
-                              :icon="props.open ? 'angle-down' : 'angle-up'">
-                          </b-icon>
-                      </a>
+                <div slot="trigger" slot-scope="props" class="card-header">
+                    <p class="card-header-title">
+                        Personajes
+                    </p>
+                    <a class="card-header-icon">
+                        <b-icon
+                            pack="fa"
+                            :icon="props.open ? 'angle-down' : 'angle-up'">
+                        </b-icon>
+                    </a>
+                </div>
+                <div class="panel">
+                  <div class="panel-block">
+                    <p class="control">
+                      <input @keyup.enter="addCharacter" class="input" type="text" placeholder="Agregar Personaje">
+                    </p>
                   </div>
-                  <div class="card-content">
-                      <div class="content">
-                        <div class="field">
-                          <b-taginput
-                              v-model="characterTags"
-                              icon="label"
-                              placeholder="Agregar personaje">
-                          </b-taginput>
-                        </div>
-                      </div>
-                  </div>
+                  <a class="panel-block" v-for="c in characters">
+                    {{c}}
+                  </a>
+                </div>
               </b-collapse>
 
-              <nav class="panel">
-                <p class="panel-heading">
-                  Personajes
-                </p>
-                <div class="panel-block">
-                  <p class="control has-icons-left">
-                    <input class="input is-small" type="text" placeholder="Agregar">
-                  </p>
-                </div>
-                <a class="panel-block is-active">
-                  <span class="panel-icon">
-                    <i class="fas fa-book"></i>
-                  </span>
-                  Jacob Price
-                </a>
-                <a class="panel-block">
-                  <span class="panel-icon">
-                    <i class="fas fa-book"></i>
-                  </span>
-                  Adel
-                </a>
-              </nav>
+
               <b-collapse class="card">
                   <div slot="trigger" slot-scope="props" class="card-header">
                       <p class="card-header-title">
@@ -166,7 +144,15 @@ export default {
   name: 'app',
   data () {
     return {
-      characterTags: ['Jacob Price']
+      characters: ['Jacob Price'],
+      characterOpen: true
+      
+    }
+  },
+  methods: {
+    addCharacter(event) {
+      let name = event.target.value
+      this.characters.push(name)
     }
   }
 }
