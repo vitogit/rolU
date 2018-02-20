@@ -16,7 +16,10 @@
         <div id="navMenu" class="navbar-menu">
           <div class="navbar-start">
             <a class="navbar-item" href="admin.html">
-              Home
+              Inicio
+            </a>
+            <a class="navbar-item" href="admin.html">
+              Bolsa de cosas
             </a>
           </div>
 
@@ -24,7 +27,7 @@
       </div>
     </nav>
     <!-- END NAV -->
-    <div class="container">
+    <div class="container main">
       <div class="columns">
         <div class="column is-2">
           <aside class="menu">
@@ -61,10 +64,26 @@
                   </p>
                 </header>
                 <div class="card-content">
-                  Era una noche oscura.
+                  <p v-for="m in messages">
+                    {{m}}
+                  </p>
                 </div>
                 <footer class="card-footer">
                   <textarea class="textarea is-info" type="text"></textarea>
+                </footer>
+                <footer class="card-footer" style="padding:10px">
+                  <div class="field is-grouped">
+                    <p class="control">
+                      <a class="button">
+                        Pregunta
+                      </a>
+                    </p>
+                    <p class="control">
+                      <a class="button">
+                        Descripción
+                      </a>
+                    </p>
+                  </div>
                 </footer>
               </div>
             </div>
@@ -75,10 +94,10 @@
                         Personajes
                     </p>
                     <a class="card-header-icon">
-                        <b-icon
-                            pack="fa"
-                            :icon="props.open ? 'angle-down' : 'angle-up'">
-                        </b-icon>
+                      <b-icon
+                          pack="fa"
+                          :icon="props.open ? 'angle-down' : 'angle-up'">
+                      </b-icon>
                     </a>
                 </div>
                 <div class="panel">
@@ -87,8 +106,8 @@
                       <input @keyup.enter="addCharacter" class="input" type="text" placeholder="Agregar Personaje">
                     </p>
                   </div>
-                  <a class="panel-block" v-for="c in characters">
-                    {{c}}
+                  <a @click="openModal(c)" class="panel-block" v-for="c in characters">
+                    {{c.name}}
                   </a>
                 </div>
               </b-collapse>
@@ -135,7 +154,27 @@
           </div>
         </div>
       </div>
+      
+
     </div>
+    <b-modal :active.sync="isCharacterModalActive">
+     <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            {{currentElement.name}}
+          </p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <textarea class="textarea is-info" type="text">{{currentElement.data}}</textarea>
+          </div>
+        </div>
+        <footer class="card-footer">
+          <a href="#" class="card-footer-item">Grabar</a>
+          <a href="#" class="card-footer-item">Eliminar</a>
+        </footer>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -144,15 +183,21 @@ export default {
   name: 'app',
   data () {
     return {
-      characters: ['Jacob Price'],
-      characterOpen: true
-      
+      messages: ['Era una noche oscura', 'El pueblo estaba en calma.'],
+      characters: [{name: 'Jacob Price', data: 'Hola soy Jacob'}],
+      characterOpen: true,
+      isCharacterModalActive: false,
+      currentElement: {}
     }
   },
   methods: {
     addCharacter(event) {
       let name = event.target.value
-      this.characters.push(name)
+      this.characters.push({name:name, data:''})
+    },
+    openModal(element) {
+      this.isCharacterModalActive = true
+      this.currentElement = element
     }
   }
 }
