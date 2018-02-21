@@ -21,6 +21,18 @@
             <a class="navbar-item" href="admin.html">
               Bolsa de cosas
             </a>
+            <!-- <a class="navbar-item" href="admin.html">
+              Personajes
+            </a>
+            <a class="navbar-item" href="admin.html">
+              Escena
+            </a>
+            <a class="navbar-item" href="admin.html">
+              Historia
+            </a>
+            <a class="navbar-item" href="admin.html">
+              Exportar
+            </a> -->
           </div>
 
         </div>
@@ -63,12 +75,16 @@
                     Escena 1: La llegada
                   </p>
                 </header>
-                <div class="card-content">
+                <div class="card-content messages-area" ref="messagesArea">
                   <p v-for="m in messages" v-html="m">
                   </p>
                 </div>
                 <footer class="card-footer">
-                  <textarea  @keyup.enter="addMessage" v-model="newMessage" class="textarea is-info" type="text"></textarea>
+                  <textarea  @keyup.enter="addMessage"
+                             v-model="newMessage"
+                             class="textarea is-info"
+                             type="text">
+                  </textarea>
                 </footer>
                 <footer class="card-footer" style="padding:10px">
                   <div class="field is-grouped">
@@ -116,43 +132,28 @@
                 </div>
               </b-collapse>
 
-
               <b-collapse class="card">
-                  <div slot="trigger" slot-scope="props" class="card-header">
-                      <p class="card-header-title">
-                          Escena
-                      </p>
-                      <a class="card-header-icon">
-                          <b-icon
-                              pack="fa"
-                              :icon="props.open ? 'angle-down' : 'angle-up'">
-                          </b-icon>
-                      </a>
+                <div slot="trigger" slot-scope="props" class="card-header">
+                    <p class="card-header-title">
+                        Escena
+                    </p>
+                    <a class="card-header-icon">
+                      <b-icon
+                          pack="fa"
+                          :icon="props.open ? 'angle-down' : 'angle-up'">
+                      </b-icon>
+                    </a>
+                </div>
+                <div class="panel">
+                  <div class="panel-block">
+                    <p class="control">
+                      <input @keyup.enter="addAspect" class="input" type="text" placeholder="Agregar aspecto">
+                    </p>
                   </div>
-                  <div class="card-content">
-                      <div class="content">
-                          Tranquilidad
-                      </div>
-                  </div>
-              </b-collapse>
-
-              <b-collapse class="card">
-                  <div slot="trigger" slot-scope="props" class="card-header">
-                      <p class="card-header-title">
-                          Historia
-                      </p>
-                      <a class="card-header-icon">
-                          <b-icon
-                              pack="fa"
-                              :icon="props.open ? 'angle-down' : 'angle-up'">
-                          </b-icon>
-                      </a>
-                  </div>
-                  <div class="card-content">
-                      <div class="content">
-                          Brumas de Aiden
-                      </div>
-                  </div>
+                  <a @click="openModal(a)" class="panel-block" v-for="a in aspects">
+                    {{a.name}}
+                  </a>
+                </div>
               </b-collapse>
             </div>
           </div>
@@ -161,7 +162,7 @@
       
 
     </div>
-    <b-modal :active.sync="isCharacterModalActive">
+    <b-modal :active.sync="isModalActive">
      <div class="card">
         <header class="card-header">
           <p class="card-header-title">
@@ -190,34 +191,46 @@ export default {
       messages: ['Era una noche oscura', 'El pueblo estaba en calma.'],
       newMessage: '',
       characters: [{name: 'Jacob Price', data: 'Hola soy Jacob'}],
-      characterOpen: true,
-      isCharacterModalActive: false,
+      aspects: [{name: 'Tranquilidad', data: 'Pueblo tranquilo'}],
+      isModalActive: false,
       currentElement: {},
       tempBag: ['Si', 'No', 'Si pero', 'No pero']
     }
   },
+  watch: {
+    // whenever messages change, clean input and scroll bottom
+    messages: function () {
+      this.newMessage = ''
+      let ref = this.$refs.messagesArea
+      ref.scrollTop = ref.scrollHeight
+    }
+  },  
   methods: {
     addCharacter(event) {
       let name = event.target.value
-      if (name != '')
+      if (name == '')
         return
-      this.characters.push({name:name, data:''})
+      this.characters.push({name: name, data: ''})
+    },
+    addAspect(event) {
+      let name = event.target.value
+      if (name == '')
+        return
+      this.aspects.push({name: name, data: ''})
     },
     addMessage() {
       if (this.newMessage == '')
         return
       this.messages.push(this.newMessage)
-      this.newMessage = ''
     },
-    addDialog() { //TODO DRY duplicate code
+    addDialog() {
       if (this.newMessage == '')
         return
       let message = this.addTextStyle(this.newMessage, 'dialog')
       this.messages.push(message)
-      this.newMessage = ''
     },
     openModal(element) {
-      this.isCharacterModalActive = true
+      this.isModalActive = true
       this.currentElement = element
     },
     getFromBag() {
@@ -230,7 +243,6 @@ export default {
       this.messages.push(message)
     },
     addTextStyle(message, type) {
-      
       if (type == 'dialog') {
         message = `<span style:'padding:10px' class="is-italic">—${message}</span>`
       } else {

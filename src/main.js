@@ -5,7 +5,7 @@ import 'buefy/lib/buefy.css'
 import './assets/css/theme.css'
 Vue.use(Buefy)
 
-new Vue({
+window.vm = new Vue({
   el: '#app',
   render: h => h(App)
 })

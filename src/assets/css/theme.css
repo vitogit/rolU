@@ -79,3 +79,9 @@ nav.navbar {
   max-height: 250px;
   overflow-y: scroll;
 }
+
+.messages-area {
+  height: 400px;
+  overflow: auto;
+  font-size: 14px;
+}
