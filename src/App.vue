@@ -15,10 +15,10 @@
         </div>
         <div id="navMenu" class="navbar-menu">
           <div class="navbar-start">
-            <a class="navbar-item" href="admin.html">
+            <a class="navbar-item" v-bind:class = "{ 'is-active': activePage=='scene' }" @click="openPage('scene')">
               Inicio
             </a>
-            <a class="navbar-item" href="admin.html">
+            <a class="navbar-item" v-bind:class = "{ 'is-active': activePage=='bagapp' }" @click="openPage('bagapp')">
               Bolsa de cosas
             </a>
             <!-- <a class="navbar-item" href="admin.html">
@@ -65,7 +65,8 @@
             </ul>
           </aside>
         </div>
-        <scene></scene>
+        <scene v-if="activePage == 'scene'" ></scene>
+        <BagApp v-if="activePage == 'bagapp'"></BagApp>
       </div>
     </div>
 
@@ -74,10 +75,12 @@
 
 <script>
 import Scene from './Scene'
+import BagApp from './BagApp'
 export default {
   name: 'app',
   components: {
     Scene,
+    BagApp
   },  
   props: ['name', 'messages', 'characters', 'aspects'],
   data () {
@@ -85,7 +88,8 @@ export default {
                       { name: 'Escena 2: El pueblo dormido'}, {name: 'Secuela 2: La decisión'}]
     return {
       scenes: tempScenes,
-      currentScene: tempScenes[0].name
+      currentScene: tempScenes[0].name,
+      activePage: 'scene'
     }
   },
   watch: {
@@ -104,6 +108,9 @@ export default {
           cancelText:'Cancelar',
           onConfirm: (value) => this.scenes.push({ name: value})
       })
+    },
+    openPage(page) {
+      this.activePage = page
     }
   }
 }
