@@ -29,8 +29,8 @@
                 </a>
               </p>
               <div class="select">
-                <select>
-                  <option v-for="bag in bags" v-text="bag.name"></option>
+                <select v-model="currentBagNumber">
+                  <option   v-bind:value="bag.number" v-for="bag in bags" v-text="bag.name"></option>
                 </select>
               </div>
             </div>
@@ -119,7 +119,8 @@ export default {
       aspects: [{name: 'Tranquilidad', data: 'Pueblo tranquilo'}],
       isModalActive: false,
       currentElement: {},
-      bags: [{name:'defa'}]
+      bags: [],
+      currentBagNumber: ''
     }
   },
   watch: {
@@ -159,7 +160,9 @@ export default {
       this.currentElement = element
     },
     getFromBag() {
-      let element = this.tempBag[0]
+      let bag = this.bags.find(e => e.number === this.currentBagNumber);
+      console.log("bag________",bag)
+      let element = bag.items[Math.floor(Math.random() * bag.items.length)].name;
       if (this.newMessage != '') {
         element = this.newMessage +': '+element
         this.newMessage = ''
@@ -179,6 +182,7 @@ export default {
   created() {
     this.$eventHub.$on('mod-bags', (bags) => {
       this.bags = bags
+      this.currentBagNumber = this.bags[0].number
     })
   }  
 }
