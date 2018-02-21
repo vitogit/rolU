@@ -5,6 +5,8 @@ import 'buefy/lib/buefy.css'
 import './assets/css/theme.css'
 Vue.use(Buefy)
 
+Vue.prototype.$eventHub = new Vue(); // Global event bus
+
 window.vm = new Vue({
   el: '#app',
   render: h => h(App)

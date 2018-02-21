@@ -30,9 +30,7 @@
               </p>
               <div class="select">
                 <select>
-                  <option>Pistas</option>
-                  <option>Secretos</option>
-                  <option>Encuentros</option>
+                  <option v-for="bag in bags" v-text="bag.name"></option>
                 </select>
               </div>
             </div>
@@ -121,7 +119,7 @@ export default {
       aspects: [{name: 'Tranquilidad', data: 'Pueblo tranquilo'}],
       isModalActive: false,
       currentElement: {},
-      tempBag: ['Si', 'No', 'Si pero', 'No pero']
+      bags: [{name:'defa'}]
     }
   },
   watch: {
@@ -177,7 +175,12 @@ export default {
       }
       return message
     }
-  }
+  },
+  created() {
+    this.$eventHub.$on('mod-bags', (bags) => {
+      this.bags = bags
+    })
+  }  
 }
 </script>
 

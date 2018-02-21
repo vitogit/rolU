@@ -65,8 +65,8 @@
             </ul>
           </aside>
         </div>
-        <scene v-if="activePage == 'scene'" ></scene>
-        <BagApp v-if="activePage == 'bagapp'"></BagApp>
+        <scene v-show = "activePage == 'scene'" ></scene>
+        <BagApp v-show = "activePage == 'bagapp'" ></BagApp>
       </div>
     </div>
 
@@ -100,13 +100,13 @@ export default {
     },
     addScene() {
       this.$dialog.prompt({
-          message: `Nombre de la escena`,
-          inputAttrs: {
-            type: 'string'
-          },
-          confirmText:'Ok',
-          cancelText:'Cancelar',
-          onConfirm: (value) => this.scenes.push({ name: value})
+        message: `Nombre de la escena`,
+        inputAttrs: {
+          type: 'string'
+        },
+        confirmText:'Ok',
+        cancelText:'Cancelar',
+        onConfirm: (value) => this.scenes.push({ name: value})
       })
     },
     openPage(page) {

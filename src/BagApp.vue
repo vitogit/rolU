@@ -70,13 +70,18 @@ export default {
     addBag() {
       this.number++
       this.bags.push({name:'bag '+this.number, number: this.number})
+      this.$eventHub.$emit('mod-bags', this.bags)
     },
     removeBag(number) {
       this.bags = this.bags.filter(e => e.number !== number);
+      this.$eventHub.$emit('mod-bags', this.bags)
     },
     save(){
       itemStorage.save(this.bags)
     }
+  },
+  created() {
+    this.$eventHub.$emit('mod-bags', this.bags)
   }
 }
 </script>
