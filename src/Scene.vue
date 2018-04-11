@@ -21,9 +21,9 @@
           <footer class="card-footer" style="padding:10px">
             <div class="field is-grouped">
               <p class="control">
-                <a @click="addDialog" class="button">
+                <!-- <a @click="addDialog" class="button">
                   Diálogo
-                </a>
+                </a> -->
                 <a @click="getFromBag" class="button">
                   Sacar de la bolsa
                 </a>
@@ -51,10 +51,10 @@
                     <option v-for="i in range(-3, 3)" v-text="i"></option>
                   </select>
                 </div>
-                <a @click="rollDice" class="button buttonMove">
+                <a @click="rollDice" class="button buttonMove is-small">
                   Tirar
                 </a>
-                <a @click="rollMove(index)" class="button buttonMove" v-for="move, index in moves" v-text="move['label']">
+                <a @click="rollMove(index)" class="button buttonMove is-small" v-for="move, index in moves" v-text="move['label']">
                 </a>
               </p>
 

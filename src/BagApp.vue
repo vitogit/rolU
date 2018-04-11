@@ -56,8 +56,7 @@ export default {
   components: {bag},
   data () {
     let fetched = itemStorage.fetch()
-    let defaultBags = [{name:'Dado de 6', items:[{name:1},{name:2},{name:3},{name:4},{name:5},{name:6}], number: 1}, 
-                       {name:'Encuentros en el bosque', items:[{name:'Lobo'},{name:'Zombie'},{name:'Oso'},{name:'Vampiro'}], number: 2},
+    let defaultBags = [
                        {name:'Movimientos master', items:[
                           {name:'Aislar'},
                           {name:'Capturar aliado'},
