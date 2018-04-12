@@ -25,14 +25,14 @@
                     <button class="button is-info" slot="trigger">
                         <span>Master</span>
                     </button>
-                    <b-dropdown-item @click="getFromBag(bag.number)" v-for="bag in bags">{{bag.name}}</b-dropdown-item>
+                    <b-dropdown-item @click="getFromBag(bag.number)" v-for="bag in bags" :key="bag.number">{{bag.name}}</b-dropdown-item>
                 </b-dropdown>
 
                 <b-dropdown position="is-top-right" hoverable>
                     <button class="button is-info" slot="trigger">
                         <span>Jugador</span>
                     </button>
-                    <b-dropdown-item  @click="rollMove(index)" v-for="move, index in moves">{{move['label']}}</b-dropdown-item>
+                    <b-dropdown-item  @click="rollMove(index)" v-for="move, index in moves" :key="index">{{move['label']}}</b-dropdown-item>
                 </b-dropdown>
 
                 <div class="select">
