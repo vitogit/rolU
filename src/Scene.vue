@@ -19,44 +19,27 @@
             </textarea>
           </footer>
           <footer class="card-footer" style="padding:10px">
-            <div class="field is-grouped">
-              <p class="control">
-                <!-- <a @click="addDialog" class="button">
-                  Diálogo
-                </a> -->
-                <a @click="getFromBag" class="button">
-                  Sacar de la bolsa
-                </a>
-              </p>
-              <div class="select">
-                <select v-model="currentBagNumber">
-                  <option v-bind:value="bag.number" v-for="bag in bags" v-text="bag.name"></option>
-                </select>
-              </div>
-            </div>
-          </footer>
-          <footer class="card-footer">
-            <textarea  
-                       v-model="rollMessage"
-                       class="textarea is-info"
-                       rows="1"
-                       type="text">
-            </textarea>
-          </footer>
-          <footer class="card-footer" style="padding:10px">
-            <div>
-              <p>
+            <div class="field">
+              
+                <b-dropdown position="is-top-right" hoverable>
+                    <button class="button is-info" slot="trigger">
+                        <span>Master</span>
+                    </button>
+                    <b-dropdown-item @click="getFromBag(bag.number)" v-for="bag in bags" v-text="bag.name">{{bag.name}}</b-dropdown-item>
+                </b-dropdown>
+
+                <b-dropdown position="is-top-right" hoverable>
+                    <button class="button is-info" slot="trigger">
+                        <span>Jugador</span>
+                    </button>
+                    <b-dropdown-item  @click="rollMove(index)" v-for="move, index in moves">{{move['label']}}</b-dropdown-item>
+                </b-dropdown>
+
                 <div class="select">
                   <select v-model="currentModificator">
                     <option v-for="i in range(-3, 3)" v-text="i"></option>
                   </select>
                 </div>
-                <a @click="rollDice" class="button buttonMove is-small">
-                  Tirar
-                </a>
-                <a @click="rollMove(index)" class="button buttonMove is-small" v-for="move, index in moves" v-text="move['label']">
-                </a>
-              </p>
 
             </div>
           </footer>
@@ -140,13 +123,11 @@ export default {
     return {
       messages: ['Era una noche oscura', 'El pueblo estaba en calma.'],
       newMessage: '',
-      rollMessage: '',
       characters: [{name: 'Jacob Price', data: 'Hola soy Jacob'}],
       aspects: [{name: 'Tranquilidad', data: 'Pueblo tranquilo'}],
       isModalActive: false,
       currentElement: {},
       bags: [],
-      currentBagNumber: '',
       currentModificator: 0,
     }
   },
@@ -186,8 +167,8 @@ export default {
       this.isModalActive = true
       this.currentElement = element
     },
-    getFromBag() {
-      let bag = this.bags.find(e => e.number === this.currentBagNumber);
+    getFromBag(number) {
+      let bag = this.bags.find(e => e.number === number);
       console.log("bag________",bag)
       let element = bag.items[Math.floor(Math.random() * bag.items.length)].name;
       if (this.newMessage != '') {
@@ -207,8 +188,8 @@ export default {
     },
     rollDice() {
       let result =  this.randomNumber(6) + this.randomNumber(6) + parseInt(this.currentModificator)
-      let message = this.rollMessage +' ['+result+']'
-      this.rollMessage = ''
+      let message = this.newMessage +' ['+result+']'
+      this.newMessage = ''
       message = this.addTextStyle(message)
       this.messages.push(message)
     },
@@ -222,7 +203,7 @@ export default {
 
       let move = this.moves[moveName]
       let result =  this.randomNumber(6) + this.randomNumber(6) + parseInt(this.currentModificator)
-      let message = this.rollMessage +' ['+result+']'
+      let message = this.newMessage +' ['+result+']'
       
       if (result >= 10) {
         message += move['hit']
@@ -232,13 +213,19 @@ export default {
         message += move['miss']
       }
 
-      this.rollMessage = ''
+      this.newMessage = ''
       message = this.addTextStyle(message)
       this.messages.push(message)
     }
   },
   created() {
       this.moves = {
+                    general: {
+                      label: 'General',
+                      hit: ['Exito completo'],
+                      partial: ['Exito parcial'],
+                      miss: ['Fallas']
+                    },
                     underpressure: {
                       label: 'Actuar bajo presión',
                       hit: ['Lo logras'],
@@ -308,7 +295,6 @@ export default {
                 }    
     this.$eventHub.$on('mod-bags', (bags) => {
       this.bags = bags
-      this.currentBagNumber = this.bags[0].number
     })
   }  
 }
