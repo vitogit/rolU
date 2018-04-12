@@ -4,11 +4,20 @@
         <div class="card events-card">
           <header class="card-header">
             <p class="card-header-title">
-              Escena 1: La llegada
+              Escena 1
             </p>
           </header>
           <div class="card-content messages-area" ref="messagesArea">
-            <p v-for="m in messages" v-html="m">
+            <p @mouseenter="messageMousePosition = index"  @mouseleave="messageMousePosition = -1" v-for="m, index in messages" style="margin-top:5px">
+              <span v-html="m"></span> 
+              <a  v-show="messageMousePosition == index" @click="messages.splice(index, 1);messageMousePosition=-1">
+                  <b-icon
+                  pack="fa"
+                  icon="times"
+                  size="is-small"
+                  type="is-info">
+                  </b-icon>
+              </a>
             </p>
           </div>
           <footer class="card-footer">
@@ -121,14 +130,15 @@ export default {
   name: 'scene',
   data () {
     return {
-      messages: ['Era una noche oscura', 'El pueblo estaba en calma.'],
+      messages: [],
       newMessage: '',
-      characters: [{name: 'Jacob Price', data: 'Hola soy Jacob'}],
-      aspects: [{name: 'Tranquilidad', data: 'Pueblo tranquilo'}],
+      characters: [],
+      aspects: [],
       isModalActive: false,
       currentElement: {},
       bags: [],
       currentModificator: 0,
+      messageMousePosition: -1,
     }
   },
   watch: {

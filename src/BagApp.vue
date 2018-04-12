@@ -120,7 +120,16 @@ export default {
                           {name:'Robar algo importante'},
                           {name:'Raptar a alguien'},
                           {name:'Corromper algo o alguein'},
-                          {name:'Interponerse en el camino '}],number: 7}]
+                          {name:'Interponerse en el camino '}],number: 7},
+                       {name:'Si o No?', items:[
+                          {name:'Si y además'},
+                          {name:'Si, pero'},
+                          {name:'Si'},
+                          {name:'No'},
+                          {name:'No, pero'},
+                          {name:'No, y además'},
+                          ],number: 8}                        
+                        ]
     let bags = (fetched.length ? fetched : defaultBags)
     let maxNumber = Math.max(...bags.map(e => e.number))
 

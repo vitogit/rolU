@@ -94,8 +94,7 @@ export default {
   },  
   props: ['name', 'messages', 'characters', 'aspects'],
   data () {
-    let tempScenes = [{ name: 'Escena 1: La llegada'}, {name: 'Secuela 1: Desaliento'},
-                      { name: 'Escena 2: El pueblo dormido'}, {name: 'Secuela 2: La decisión'}]
+    let tempScenes = [{ name: 'Escena 1'}, {name: 'Secuela 1'}]
     return {
       scenes: tempScenes,
       currentScene: tempScenes[0].name,
