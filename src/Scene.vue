@@ -25,7 +25,7 @@
                     <button class="button is-info" slot="trigger">
                         <span>Master</span>
                     </button>
-                    <b-dropdown-item @click="getFromBag(bag.number)" v-for="bag in bags" v-text="bag.name">{{bag.name}}</b-dropdown-item>
+                    <b-dropdown-item @click="getFromBag(bag.number)" v-for="bag in bags">{{bag.name}}</b-dropdown-item>
                 </b-dropdown>
 
                 <b-dropdown position="is-top-right" hoverable>

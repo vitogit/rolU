@@ -8,9 +8,16 @@
             RolU
           </a>
           <div class="navbar-burger burger" data-target="navMenu">
-            <span></span>
-            <span></span>
-            <span></span>
+            <!-- <span>
+              <a @click="openPage('scene')">
+                Inicio
+              </a>
+            </span>
+            <span>
+              <a @click="openPage('bagapp')">
+                Bolsa de cosas
+              </a>
+            </span> -->
           </div>
         </div>
         <div id="navMenu" class="navbar-menu">
@@ -21,10 +28,10 @@
             <a class="navbar-item" v-bind:class = "{ 'is-active': activePage=='bagapp' }" @click="openPage('bagapp')">
               Bolsa de cosas
             </a>
-            <!-- <a class="navbar-item" href="admin.html">
-              Personajes
+            <a class="navbar-item" v-bind:class = "{ 'is-active': activePage=='generators' }" @click="openPage('generators')">
+              Generadores
             </a>
-            <a class="navbar-item" href="admin.html">
+            <!-- <a class="navbar-item" href="admin.html">
               Escena
             </a>
             <a class="navbar-item" href="admin.html">
@@ -67,6 +74,7 @@
         </div>
         <scene v-show = "activePage == 'scene'" ></scene>
         <BagApp v-show = "activePage == 'bagapp'" ></BagApp>
+        <generators v-show = "activePage == 'generators'" ></generators>
       </div>
     </div>
 
@@ -76,11 +84,13 @@
 <script>
 import Scene from './Scene'
 import BagApp from './BagApp'
+import Generators from './Generators'
 export default {
   name: 'app',
   components: {
     Scene,
-    BagApp
+    BagApp,
+    Generators
   },  
   props: ['name', 'messages', 'characters', 'aspects'],
   data () {
