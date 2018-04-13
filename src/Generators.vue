@@ -68,6 +68,28 @@
             </div>
           </article>
         </div>
+        
+      <div class="box">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <h3>Generar Evento </h3>
+              <p v-html="randomEvent">
+              </p>
+            </div>
+            <nav class="level is-mobile">
+              <div class="level-left">
+                <a @click="loadRandomEvent" class="level-item" aria-label="reply">
+                  Evento
+                </a>
+                <a @click="loadComplexQuestion" class="level-item" aria-label="reply">
+                  Pregunta compleja
+                </a>
+              </div>
+            </nav>
+          </div>
+        </article>
+      </div>
       </div>
     </div>
   </div>
@@ -76,6 +98,7 @@
 <script>
 import generateCharacter from './characterGenerator.js'
 import generateRandomScene from './sceneGenerator.js'
+import {randomEvent, complexQuestion} from './eventGenerator.js'
 import {DiceRoller} from 'vue-dice-roller'
 export default {
   name: 'generators',
@@ -85,7 +108,8 @@ export default {
       character:'',
       randomScene:'',
       characterLanguage:'spanish',
-      diceCount: 6
+      diceCount: 6,
+      randomEvent: ''
     }
   },
   methods: {
@@ -94,6 +118,12 @@ export default {
     },
     loadRandomScene() {
       this.randomScene = generateRandomScene()
+    },
+    loadRandomEvent() {
+      this.randomEvent = randomEvent()
+    },
+    loadComplexQuestion() {
+      this.randomEvent = complexQuestion()
     },
     roll() {
       this.$refs.diceroller.roll();
