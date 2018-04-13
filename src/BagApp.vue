@@ -1,6 +1,6 @@
 <template>
   <div id="bagapp">
-    <div class="container">
+    <div>
       <header class="has-text-centered">
         <h1 class="title">
           Bolsas con cosas
@@ -21,16 +21,16 @@
       </div>
       <br>
       <div>
-        <bag 
-          class ="bag" 
+        <bag
+          class ="bag"
           @onRemove="removeBag(bag.number)"
           :name="bag.name"
-          :items="bag.items" 
-          v-for="(bag, index) in bags" 
+          :items="bag.items"
+          v-for="(bag, index) in bags"
           :key="index"/>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
@@ -100,7 +100,7 @@ export default {
                           {name:'Ofender o insultar a alguien poderoso'},
                           {name:'Caputar algo o a alguien poderoso'},
                           {name:'Destruir algo o a alguien poderoso'},
-                          {name:'Reclamar algo que les pertenece'}],number: 5}, 
+                          {name:'Reclamar algo que les pertenece'}],number: 5},
                        {name:'Movimientos: Territorio', items:[
                           {name:'Revelar algo importante'},
                           {name:'Mostrar algo para que todos vean'},
@@ -128,7 +128,7 @@ export default {
                           {name:'No'},
                           {name:'No, pero'},
                           {name:'No, y además'},
-                          ],number: 8}                        
+                          ],number: 8}
                         ]
     let bags = (fetched.length ? fetched : defaultBags)
     let maxNumber = Math.max(...bags.map(e => e.number))

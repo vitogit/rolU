@@ -1,12 +1,12 @@
 <template>
   <div id="generators">
-    <div class="container">
+    <div>
       <header class="has-text-centered">
         <h1 class="title">
           Generadores aleatorios
         </h1>
       </header>
-      
+
       <div>
         <div class="box">
           <article class="media">
@@ -34,7 +34,7 @@
             </div>
           </article>
         </div>
-        
+
         <div class="box">
           <article class="media">
             <div class="media-content">
@@ -49,13 +49,33 @@
             </div>
           </article>
         </div>
+
+        <div class="box">
+          <article class="media">
+            <div class="media-content">
+              <div class="content">
+                <h3>Generar Escena </h3>
+                <p v-html="randomScene">
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a @click="loadRandomScene" class="level-item" aria-label="reply">
+                    Recargar
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
 import generateCharacter from './characterGenerator.js'
+import generateRandomScene from './sceneGenerator.js'
 import {DiceRoller} from 'vue-dice-roller'
 export default {
   name: 'generators',
@@ -63,6 +83,7 @@ export default {
   data () {
     return {
       character:'',
+      randomScene:'',
       characterLanguage:'spanish',
       diceCount: 6
     }
@@ -71,13 +92,16 @@ export default {
     loadCharacter(){
       this.character = generateCharacter(this.characterLanguage)
     },
+    loadRandomScene() {
+      this.randomScene = generateRandomScene()
+    },
     roll() {
       this.$refs.diceroller.roll();
     }
   },
   created() {
       console.log("this.$refs________",this.$refs)
-      console.log("vuediceroller________",DiceRoller)    
+      console.log("vuediceroller________",DiceRoller)
   }
 }
 </script>

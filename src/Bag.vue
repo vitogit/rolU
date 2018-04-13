@@ -1,9 +1,9 @@
 <template>
   <nav class="panel">
     <p class="panel-heading">
-      <input 
+      <input
         class="input is-medium"
-        style="width:50%"
+        style="width:45%"
         type="text"
         v-if="editingBag"
         v-model="name"
@@ -30,7 +30,7 @@
     </div>
     <div class="panel-block" v-if="editingBag">
       <p class="control has-icons-left">
-        <input 
+        <input
           class="input is-medium"
           type="text"
           placeholder="Agrega cosas"
@@ -39,18 +39,18 @@
           @keyup.enter="addItem" />
       </p>
     </div>
-    <div 
+    <div
       class="panel-block"
       v-for="item in items"
       @dblclick="editItem(item)"
       v-if="editingBag">
       <span>
-        <input 
+        <input
           class="input is-small"
-          type="text" 
-          v-if="item === editingItem" 
+          type="text"
+          v-if="item === editingItem"
           @keyup.enter="endEditing(item)"
-          @blur="endEditing(item)" 
+          @blur="endEditing(item)"
           v-model="item.name"
         />
         <label class="label" v-if="item !== editingItem">

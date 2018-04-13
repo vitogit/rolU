@@ -1,5 +1,5 @@
 <template>
-    <div class="columns">
+    <div class="columns ">
       <div class="column is-8">
         <div class="card events-card">
           <header class="card-header">
@@ -9,7 +9,7 @@
           </header>
           <div class="card-content messages-area" ref="messagesArea">
             <p @mouseenter="messageMousePosition = index"  @mouseleave="messageMousePosition = -1" v-for="m, index in messages" style="margin-top:5px">
-              <span v-html="m"></span> 
+              <span v-html="m"></span>
               <a  v-show="messageMousePosition == index" @click="messages.splice(index, 1);messageMousePosition=-1">
                   <b-icon
                   pack="fa"
@@ -29,7 +29,7 @@
           </footer>
           <footer class="card-footer" style="padding:10px">
             <div class="field">
-              
+
                 <b-dropdown position="is-top-right" hoverable>
                     <button class="button is-info" slot="trigger">
                         <span>Master</span>
@@ -120,7 +120,7 @@
             <a href="#" class="card-footer-item">Eliminar</a>
           </footer>
         </div>
-      </b-modal>      
+      </b-modal>
     </div>
 
 </template>
@@ -148,7 +148,7 @@ export default {
       let ref = this.$refs.messagesArea
       ref.scrollTop = ref.scrollHeight
     }
-  },  
+  },
   methods: {
     addCharacter(event) {
       let name = event.target.value
@@ -214,7 +214,7 @@ export default {
       let move = this.moves[moveName]
       let result =  this.randomNumber(6) + this.randomNumber(6) + parseInt(this.currentModificator)
       let message = this.newMessage +' ['+result+']'
-      
+
       if (result >= 10) {
         message += move['hit']
       } else if (result >=6) {
@@ -242,55 +242,55 @@ export default {
                       partial: ['Dudas o te paralizas. Lo logras con un alto costo o tienes una dificil desición'],
                       miss: ['Fallas']
                     },
-                    investigate: { 
+                    investigate: {
                       label: 'Investigar',
                       hit: ['Averiguas algo importante'],
                       partial: ['Averiguas algo pero te adentras en el peligro'],
                       miss: ['Fallas']
                     },
                     explore: {
-                      label: 'Explorar',                  
+                      label: 'Explorar',
                       hit: ['Encuntras un objeto interesante o una buena pista'],
                       partial: ['Encuentras un lugar secreto o un objeto menor o una trampa'],
                       miss: ['Nada interesante']
-                    }, 
-                    idea: { 
+                    },
+                    idea: {
                       label: 'Idea',
                       hit: ['Averiguas un conocimiento oculto o sabes que es, que signigica y a que estar atento.'],
                       partial: ['Sabes lo que es o como funciona pero vagamente'],
                       miss: ['Fallas']
                     },
-                    readPerson: { 
+                    readPerson: {
                       label: 'Leer a alguien',
                       hit: ['Sabes para quien trabaja, sus deseos y sus debilidades'],
                       partial: ['Sabes que es lo que mas desea o una debilidad'],
                       miss: ['No sabes nada y puede meterte en problemas']
-                    },  
+                    },
                     persuade: {
                       label: 'Persuadir',
                       hit: ['Aceptan tus condiciones'],
                       partial: ['Aceptan pero modifican las condiciones o demandan algo'],
                       miss: ['No logras persuadir y puede meterte en problemas']
-                    },                                      
+                    },
                     attack: {
                       label: 'Atacar',
                       hit: ['Haces daño | Haces daño terrible o quitas algo'],
                       partial: ['Haces daño | Recibes daño o te pones en mala posición'],
                       miss: ['Fallas y recibes daño']
                     },
-                    power: { 
+                    power: {
                       label: 'Desata tu poder',
                       hit: ['+1 a las tiradas | Expande tus sentidos o Intimidas'],
                       partial: ['Expande tus sentidos o Intimidas pero a un costo (lado oscuro)'],
                       miss: ['Te adentras en el lado oscuro']
-                    },                    
-                    escape: { 
+                    },
+                    escape: {
                       label: 'Escapar',
                       hit: ['Escape perfecto'],
                       partial: ['Escapas | Recibes daño o te pones en otra situación de peligro'],
                       miss: ['No logras escapar']
                     },
-                    help: { 
+                    help: {
                       label: 'Ayudar',
                       hit: ['+1 a las tiradas o -2 en la tirada de alguien'],
                       partial: ['+1 a las tiradas o -2 en la tirada de alguien pero te pones en peligro o tiene un costo'],
@@ -302,11 +302,11 @@ export default {
                       partial: ['Conoces a alguien que tiene algo pero el costo es alto o muy peligroso'],
                       miss: ['Fallas']
                     },
-                }    
+                }
     this.$eventHub.$on('mod-bags', (bags) => {
       this.bags = bags
     })
-  }  
+  }
 }
 </script>
 

@@ -81,7 +81,7 @@ nav.navbar {
 }
 
 .messages-area {
-  height: 400px;
+  height: 280px;
   overflow: auto;
   font-size: 14px;
 }

@@ -51,7 +51,7 @@
         <div class="column is-2">
           <aside class="menu">
             <p class="menu-label">
-              Escenas 
+              Escenas
               <a @click="addScene">
                   <b-icon
                   pack="fa"
@@ -68,13 +68,15 @@
                   v-bind:class = "{ 'is-active': s.name == currentScene }">
                 </a>
               </li>
-              
+
             </ul>
           </aside>
         </div>
-        <scene v-show = "activePage == 'scene'" ></scene>
-        <BagApp v-show = "activePage == 'bagapp'" ></BagApp>
-        <generators v-show = "activePage == 'generators'" ></generators>
+        <div class="column is-10">
+          <scene v-show = "activePage == 'scene'" ></scene>
+          <BagApp v-show = "activePage == 'bagapp'" ></BagApp>
+          <generators v-show = "activePage == 'generators'" ></generators>
+        </div>
       </div>
     </div>
 
@@ -91,7 +93,7 @@ export default {
     Scene,
     BagApp,
     Generators
-  },  
+  },
   props: ['name', 'messages', 'characters', 'aspects'],
   data () {
     let tempScenes = [{ name: 'Escena 1'}, {name: 'Secuela 1'}]
@@ -102,7 +104,7 @@ export default {
     }
   },
   watch: {
-  },  
+  },
   methods: {
     loadScene(sceneName) {
       this.currentScene= sceneName
