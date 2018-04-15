@@ -31,6 +31,9 @@
             <a class="navbar-item" v-bind:class = "{ 'is-active': activePage=='generators' }" @click="openPage('generators')">
               Generadores
             </a>
+            <a class="navbar-item" v-bind:class = "{ 'is-active': activePage=='notes' }" @click="openPage('notes')">
+              Notas
+            </a>
             <!-- <a class="navbar-item" href="admin.html">
               Escena
             </a>
@@ -76,6 +79,7 @@
           <scene v-show = "activePage == 'scene'" ></scene>
           <BagApp v-show = "activePage == 'bagapp'" ></BagApp>
           <generators v-show = "activePage == 'generators'" ></generators>
+          <notes v-show = "activePage == 'notes'" ></notes>
         </div>
       </div>
     </div>
@@ -87,12 +91,14 @@
 import Scene from './Scene'
 import BagApp from './BagApp'
 import Generators from './Generators'
+import Notes from './Notes'
 export default {
   name: 'app',
   components: {
     Scene,
     BagApp,
-    Generators
+    Generators,
+    Notes
   },
   props: ['name', 'messages', 'characters', 'aspects'],
   data () {
