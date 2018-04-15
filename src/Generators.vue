@@ -68,7 +68,7 @@
             </div>
           </article>
         </div>
-        
+
       <div class="box">
         <article class="media">
           <div class="media-content">
@@ -81,9 +81,6 @@
               <div class="level-left">
                 <a @click="loadRandomEvent" class="level-item" aria-label="reply">
                   Evento
-                </a>
-                <a @click="loadComplexQuestion" class="level-item" aria-label="reply">
-                  Pregunta compleja
                 </a>
               </div>
             </nav>
@@ -130,8 +127,6 @@ export default {
     }
   },
   created() {
-      console.log("this.$refs________",this.$refs)
-      console.log("vuediceroller________",DiceRoller)
   }
 }
 </script>

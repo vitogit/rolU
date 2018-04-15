@@ -30,11 +30,11 @@
           <footer class="card-footer" style="padding:10px">
             <div class="field">
 
-                <b-dropdown position="is-top-right" hoverable>
+                <b-dropdown position="is-top-right" hoverable v-for="bag, index in bags">
                     <button class="button is-info" slot="trigger">
-                        <span>Master</span>
+                        <span>{{index}}</span>
                     </button>
-                    <b-dropdown-item @click="getFromBag(bag.number)" v-for="bag in bags" :key="bag.number">{{bag.name}}</b-dropdown-item>
+                    <b-dropdown-item @click="getFromBag(bag)" v-for="bag in bags[index]" :key="bag.number">{{bag.name}}</b-dropdown-item>
                 </b-dropdown>
 
                 <b-dropdown position="is-top-right" hoverable>
@@ -177,15 +177,26 @@ export default {
       this.isModalActive = true
       this.currentElement = element
     },
-    getFromBag(number) {
-      let bag = this.bags.find(e => e.number === number);
-      console.log("bag________",bag)
-      let element = bag.items[Math.floor(Math.random() * bag.items.length)].name;
+    getFromBag(bag) {
+      let result = ''
+      let count = 1
+      let regex = bag.name.match(/ \d+$/)
+      console.log("regex",regex)
+      if (regex) {
+        count = regex[0]
+      }
+      console.log("count",count)
+      for (let i = 0; i < count; i++) {
+        let element = bag.items[Math.floor(Math.random() * bag.items.length)].name;
+        result += element + ' / '
+      }
+      result = result.replace(/\/ $/, "");
+
       if (this.newMessage != '') {
-        element = this.newMessage +': '+element
+        result = this.newMessage +': '+result
         this.newMessage = ''
       }
-      let message = this.addTextStyle(element)
+      let message = this.addTextStyle(result)
       this.messages.push(message)
     },
     addTextStyle(message, type) {
@@ -304,7 +315,23 @@ export default {
                     },
                 }
     this.$eventHub.$on('mod-bags', (bags) => {
-      this.bags = bags
+      this.bags = {}
+      for (let bag of bags) {
+        let regex = bag.name.match(/^(.*):(.*)/)
+
+        let category = 'General'
+        let name = bag.name
+        if (regex) {
+          category = regex[1]
+          name = regex[2]
+        }
+
+        if (!this.bags[category]) {
+          this.bags[category] = []
+        }
+        this.bags[category].push(bag)
+      }
+      console.log("this.bags",this.bags)
     })
   }
 }

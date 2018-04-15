@@ -57,7 +57,7 @@ export default {
   data () {
     let fetched = itemStorage.fetch()
     let defaultBags = [
-                       {name:'Movimientos master', items:[
+                       {name:'Movimientos master 2', items:[
                           {name:'Aislar'},
                           {name:'Capturar aliado'},
                           {name:'Capturar protagonista'},
