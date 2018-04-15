@@ -136,7 +136,7 @@ export default {
       aspects: [],
       isModalActive: false,
       currentElement: {},
-      bags: [],
+      bags: {},
       currentModificator: 0,
       messageMousePosition: -1,
     }
@@ -177,20 +177,45 @@ export default {
       this.isModalActive = true
       this.currentElement = element
     },
+    findBag(bagName) {
+      let bag = {}
+      Object.keys(this.bags).forEach(categoryName => {
+        let bags = this.bags[categoryName];
+        Object.keys(bags).forEach(index => {
+          if (bagName == bags[index].name) {
+            bag = bags[index]
+            return
+          }
+        });
+      });
+      return bag
+    },
+    //If bagName is black & white then it will pull 1 thing from the first and 1 thing from the second
+    //If bagName is things 2 it will pull 2 things
     getFromBag(bag) {
       let result = ''
       let count = 1
-      let regex = bag.name.match(/ \d+$/)
-      console.log("regex",regex)
-      if (regex) {
-        count = regex[0]
+      let hasGroup = bag.name.match(/.*: (.*) & (.*)/)
+      if (hasGroup) {
+        let bagName1 = hasGroup[1]
+        let bagName2 = hasGroup[2]
+        let bag1 = this.findBag(bagName1)
+        let bag2 = this.findBag(bagName2)
+        let element1 = bag1.items[Math.floor(Math.random() * bag1.items.length)];
+        let element2 = bag2.items[Math.floor(Math.random() * bag2.items.length)];
+        result = element1 + ' / ' +element2
+      } else {
+        let hasCounter = bag.name.match(/ \d+$/)
+        if (hasCounter) {
+          count = hasCounter[0]
+        }
+        for (let i = 0; i < count; i++) {
+          let element = bag.items[Math.floor(Math.random() * bag.items.length)];
+          element = element.name || element;
+          result += element + ' / '
+        }
+        result = result.replace(/\/ $/, "");
       }
-      console.log("count",count)
-      for (let i = 0; i < count; i++) {
-        let element = bag.items[Math.floor(Math.random() * bag.items.length)].name;
-        result += element + ' / '
-      }
-      result = result.replace(/\/ $/, "");
 
       if (this.newMessage != '') {
         result = this.newMessage +': '+result
@@ -331,7 +356,6 @@ export default {
         }
         this.bags[category].push(bag)
       }
-      console.log("this.bags",this.bags)
     })
   }
 }
