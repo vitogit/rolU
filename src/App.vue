@@ -8,8 +8,8 @@
             RolU
           </a>
           <div class ="navbar-item">
-            <span v-if="logged">Bienvenido {{useremail}} <button onclick="signIn()">Sign-off</button></span>
-            <span v-if="!logged"><button onclick="signIn()">Sign-in</button></span>
+            <span style="font-size: 12px;font-weight: normal;" v-if="logged">{{useremail}} <br> <button class="button is-info is-small" @click="signOff()">Salir</button></span>
+            <span v-if="!logged"><button class="button is-info" @click="signIn()">Sign-in</button></span>
           </div>
           <div class="navbar-burger burger" data-target="navMenu">
             <!-- <span>
@@ -69,10 +69,10 @@
               </a>
             </p>
             <ul class="menu-list">
-              <li v-for="s in scenes">
+              <li v-for="s in app.scenes">
                 <a v-text = "s.name"
-                  @click = "loadScene(s.name)"
-                  v-bind:class = "{ 'is-active': s.name == currentScene }">
+                  @click = "loadScene(s.id)"
+                  v-bind:class = "{ 'is-active': s.id == currentSceneId }">
                 </a>
               </li>
 
@@ -80,7 +80,7 @@
           </aside>
         </div>
         <div class="column is-10">
-          <scene v-show = "activePage == 'scene'" ></scene>
+          <scene v-show = "activePage == 'scene'" :name='app.scenes[currentSceneId].name' :messages='app.scenes[currentSceneId].messages'></scene>
           <BagApp v-show = "activePage == 'bagapp'" ></BagApp>
           <generators v-show = "activePage == 'generators'" ></generators>
           <notes v-show = "activePage == 'notes'" ></notes>
@@ -92,11 +92,6 @@
 </template>
 
 <script>
-// var gDrive = require("exports?gdrive-sync-js!gdrive-sync-js")
-// import {gdrive} from 'gdrive'
-
-
-
 
 import Scene from './Scene'
 import BagApp from './BagApp'
@@ -110,22 +105,23 @@ export default {
     Generators,
     Notes
   },
-  props: ['name', 'messages', 'characters', 'aspects'],
   data () {
-    let tempScenes = [{ name: 'Escena 1'}, {name: 'Secuela 1'}]
     return {
-      scenes: tempScenes,
-      currentScene: tempScenes[0].name,
+      currentSceneId: 0,
+      lastSceneId:1,
       activePage: 'scene',
       logged: false,
-      useremail: ''
+      useremail: '',
+      app: {
+        scenes: [{ name: 'Escena 1', messages: ['La noche estaba en calma'], id: 0}, {name: 'Secuela 1', messages: ['El muro de piedra.'], id:1 }]
+      }
     }
   },
   watch: {
   },
   methods: {
-    loadScene(sceneName) {
-      this.currentScene= sceneName
+    loadScene(id) {
+      this.currentSceneId = id
     },
     addScene() {
       this.$dialog.prompt({
@@ -135,11 +131,17 @@ export default {
         },
         confirmText:'Ok',
         cancelText:'Cancelar',
-        onConfirm: (value) => this.scenes.push({ name: value})
+        onConfirm: (value) => this.app.scenes.push({ name: value, messages:[], id: this.lastSceneId+1})
       })
     },
     openPage(page) {
       this.activePage = page
+    },
+    signIn() {
+      window.loginService.signIn()
+    },
+    signOff(){
+      window.loginService.signOut()
     }
   },
   created() {
@@ -154,7 +156,14 @@ export default {
   },
   mounted() {
     this.$eventHub.$on('is-logged', (logged) => {
-      console.log("logged",logged)
+      this.logged = logged 
+      if (logged) {
+        this.useremail = window.loginService.userProfile().getEmail()
+      }
+    })
+
+    this.$eventHub.$on('scene-change', (scene) => {
+      this.app.scenes[scene.id] = scene
     })
 
   }

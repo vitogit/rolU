@@ -15,7 +15,6 @@
     <div id="app"></div>
     <script src="/dist/build.js"></script>
     <script>
-      //Try to automactically signin
       function initClient() {
         window.loginService.initClient(updateSigninStatus)
       }
@@ -25,10 +24,7 @@
       }
 
       function updateSigninStatus(isSignedIn) {
-        window.loginService.logged = isSignedIn
-        console.log("updatesigning",window.loginService.logged)
         vm.$eventHub.$emit('is-logged', isSignedIn)
-
       }
 
     </script>

@@ -3,8 +3,8 @@
       <div class="column is-8">
         <div class="card events-card">
           <header class="card-header">
-            <p class="card-header-title">
-              Escena 1
+            <p  class="card-header-title">
+              {{name}}
             </p>
           </header>
           <div class="card-content messages-area" ref="messagesArea">
@@ -128,9 +128,9 @@
 <script>
 export default {
   name: 'scene',
+  props: ['name', 'messages'],  
   data () {
     return {
-      messages: [],
       newMessage: '',
       characters: [],
       aspects: [],
