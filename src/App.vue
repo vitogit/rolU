@@ -7,6 +7,10 @@
           <a class="navbar-item brand-text" href="../">
             RolU
           </a>
+          <div class ="navbar-item">
+            <span v-if="logged">Bienvenido {{useremail}} <button onclick="signIn()">Sign-off</button></span>
+            <span v-if="!logged"><button onclick="signIn()">Sign-in</button></span>
+          </div>
           <div class="navbar-burger burger" data-target="navMenu">
             <!-- <span>
               <a @click="openPage('scene')">
@@ -88,6 +92,12 @@
 </template>
 
 <script>
+// var gDrive = require("exports?gdrive-sync-js!gdrive-sync-js")
+// import {gdrive} from 'gdrive'
+
+
+
+
 import Scene from './Scene'
 import BagApp from './BagApp'
 import Generators from './Generators'
@@ -106,7 +116,9 @@ export default {
     return {
       scenes: tempScenes,
       currentScene: tempScenes[0].name,
-      activePage: 'scene'
+      activePage: 'scene',
+      logged: false,
+      useremail: ''
     }
   },
   watch: {
@@ -129,6 +141,22 @@ export default {
     openPage(page) {
       this.activePage = page
     }
+  },
+  created() {
+    //https://www.googleapis.com/auth/drive.appdata
+    const SCOPES = 'https://www.googleapis.com/auth/drive.file'
+    const CLIENT_ID = '787907413982-ek7jje54nljmljno0rja381lg5hsan6h.apps.googleusercontent.com'
+    const KEY = 'AIzaSyCubuthz8KwjTNU4LsaLbmOW-vJyWaN77k'
+    const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
+
+    window.loginService = new LoginService(CLIENT_ID, SCOPES, DISCOVERY_DOCS)
+    window.driveService = new DriveService()
+  },
+  mounted() {
+    this.$eventHub.$on('is-logged', (logged) => {
+      console.log("logged",logged)
+    })
+
   }
 }
 </script>

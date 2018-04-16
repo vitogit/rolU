@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <script src="../node_modules/gdrive-sync-js/lib/login.service.js"></script>
+    <script src="../node_modules/gdrive-sync-js/lib/drive.service.js"></script>
 
     <title>rolu</title>
   </head>
   <body>
+
     <div id="app"></div>
     <script src="/dist/build.js"></script>
+    <script>
+      //Try to automactically signin
+      function initClient() {
+        window.loginService.initClient(updateSigninStatus)
+      }
+
+      function initGapi() {
+        gapi.load('client:auth2', initClient);
+      }
+
+      function updateSigninStatus(isSignedIn) {
+        window.loginService.logged = isSignedIn
+        console.log("updatesigning",window.loginService.logged)
+        vm.$eventHub.$emit('is-logged', isSignedIn)
+
+      }
+
+    </script>
+    <script src="https://apis.google.com/js/api.js?onload=initGapi"></script>
   </body>
 </html>
