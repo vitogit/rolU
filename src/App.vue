@@ -8,7 +8,12 @@
             RolU
           </a>
           <div class ="navbar-item">
-            <span style="font-size: 12px;font-weight: normal;" v-if="logged">{{useremail}} <br> <button class="button is-info is-small" @click="signOff()">Salir</button></span>
+            <span style="font-size: 12px;font-weight: normal;" v-if="logged">
+                {{useremail}} <br> 
+                <button class="button is-info is-small" @click="signOff()">Salir</button>
+                <button class="button is-info is-small" @click="savePrompt()">Guardar</button>
+                <button class="button is-info is-small" @click="newFile()">Nuevo</button>
+            </span>
             <span v-if="!logged"><button class="button is-info" @click="signIn()">Sign-in</button></span>
           </div>
           <div class="navbar-burger burger" data-target="navMenu">
@@ -77,6 +82,19 @@
               </li>
 
             </ul>
+            
+            <p class="menu-label">
+              Archivos
+            </p>
+            <ul class="menu-list">
+              <li v-for="f in savedFiles">
+                <a v-text = "f.name"
+                  @click = "loadFile(f)"
+                  v-bind:class = "{ 'is-active': f.id == currentFile.id }">
+                </a>
+              </li>
+
+            </ul>            
           </aside>
         </div>
         <div class="column is-10">
@@ -107,6 +125,8 @@ export default {
   },
   data () {
     return {
+      savedFiles: [],
+      currentFile: {id: null, name: 'test', content: ''},
       gapiLoadClientPromise: null,
       currentSceneId: 0,
       lastSceneId:1,
@@ -151,14 +171,65 @@ export default {
       this.logged = isSignedIn 
       if (this.logged) {
         this.useremail = window.loginService.userProfile().getEmail()
+        window.driveService.listFiles('', this.initList)
       }
+    },
+    initList(err, files) {
+      this.savedFiles = files
+    },
+    savePrompt() {
+      console.log("saveprompt this.currentFile________",this.currentFile)
+      if (this.currentFile.id) {
+        this.saveFile(this.currentFile.name)
+        return
+      }
+      this.$dialog.prompt({
+          message: `Nombre del archivo`,
+          inputAttrs: {
+            placeholder: 'test',
+          },
+          onConfirm: (value) => this.saveFile(value)
+      })
+    },
+    saveFile(name) {
+      let self = this 
+      this.currentFile.content = JSON.stringify(this.app)
+      this.currentFile.name = name
+      window.driveService.saveFileRaw(self.currentFile, function(file){
+        self.currentFile = file
+        self.$toast.open({
+            message: `${self.currentFile.name} - Guardado!`,
+            type: 'is-success'
+        })
+        window.driveService.listFiles('', self.initList)
+      })
+    },
+    loadFile(tempFile) {
+      let self = this 
+      driveService.loadFileRaw(tempFile, function(file){
+        self.currentFile = file
+        self.app = JSON.parse(file.content)
+        self.$toast.open({
+            message: `${self.currentFile.name} - Cargado!`,
+            type: 'is-success'
+        })
+      })
+    },
+    newFile() {
+      this.currentFile =  {id: null, name: 'test', content: ''},
+      this.app =  {
+        scenes: [{ name: 'Escena 1', messages: [], id: 0}]
+      }
+      this.$toast.open({
+          message: `Nueva historia`,
+          type: 'is-success'
+      })
     }
   },
   created() {
     //https://www.googleapis.com/auth/drive.appdata
     const SCOPES = 'https://www.googleapis.com/auth/drive.file'
     const CLIENT_ID = '787907413982-ek7jje54nljmljno0rja381lg5hsan6h.apps.googleusercontent.com'
-    const KEY = 'AIzaSyCubuthz8KwjTNU4LsaLbmOW-vJyWaN77k'
     const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
 
     window.loginService = new LoginService(CLIENT_ID, SCOPES, DISCOVERY_DOCS)
