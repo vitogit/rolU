@@ -13,21 +13,7 @@
   <body>
 
     <div id="app"></div>
+    <script src="https://apis.google.com/js/api:client.js"></script>
     <script src="/dist/build.js"></script>
-    <script>
-      function initClient() {
-        window.loginService.initClient(updateSigninStatus)
-      }
-
-      function initGapi() {
-        gapi.load('client:auth2', initClient);
-      }
-
-      function updateSigninStatus(isSignedIn) {
-        vm.$eventHub.$emit('is-logged', isSignedIn)
-      }
-
-    </script>
-    <script src="https://apis.google.com/js/api.js?onload=initGapi"></script>
   </body>
 </html>

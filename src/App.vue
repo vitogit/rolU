@@ -107,6 +107,7 @@ export default {
   },
   data () {
     return {
+      gapiLoadClientPromise: null,
       currentSceneId: 0,
       lastSceneId:1,
       activePage: 'scene',
@@ -142,6 +143,15 @@ export default {
     },
     signOff(){
       window.loginService.signOut()
+    },
+    initClient() {
+      window.loginService.initClient(this.updateSigninStatus)
+    },
+    updateSigninStatus(isSignedIn) {
+      this.logged = isSignedIn 
+      if (this.logged) {
+        this.useremail = window.loginService.userProfile().getEmail()
+      }
     }
   },
   created() {
@@ -155,12 +165,7 @@ export default {
     window.driveService = new DriveService()
   },
   mounted() {
-    this.$eventHub.$on('is-logged', (logged) => {
-      this.logged = logged 
-      if (logged) {
-        this.useremail = window.loginService.userProfile().getEmail()
-      }
-    })
+    window.gapi.load('auth2', this.initClient)
 
     this.$eventHub.$on('scene-change', (scene) => {
       this.app.scenes[scene.id] = scene
