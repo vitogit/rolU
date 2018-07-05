@@ -93,8 +93,7 @@
                   v-bind:class = "{ 'is-active': f.id == currentFile.id }">
                 </a>
               </li>
-
-            </ul>            
+            </ul>
           </aside>
         </div>
         <div class="column is-10">
@@ -129,7 +128,7 @@ export default {
       currentFile: {id: null, name: 'test', content: ''},
       gapiLoadClientPromise: null,
       currentSceneId: 0,
-      lastSceneId:1,
+      lastSceneId: 1,
       activePage: 'scene',
       logged: false,
       useremail: '',
@@ -178,7 +177,6 @@ export default {
       this.savedFiles = files
     },
     savePrompt() {
-      console.log("saveprompt this.currentFile________",this.currentFile)
       if (this.currentFile.id) {
         this.saveFile(this.currentFile.name)
         return
@@ -209,6 +207,8 @@ export default {
       driveService.loadFileRaw(tempFile, function(file){
         self.currentFile = file
         self.app = JSON.parse(file.content)
+        self.currentSceneId = 0
+        self.lastSceneId = self.app.scenes.length-1
         self.$toast.open({
             message: `${self.currentFile.name} - Cargado!`,
             type: 'is-success'

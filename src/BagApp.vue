@@ -350,8 +350,47 @@ export default {
                         'Imponente'
                       ],number: 13},
                        {name:'Ayuda: Accion & Sujeto', items:[
-
-                      ],number: 14}
+                      ],number: 14},
+                       {name:'Mazo: Lovecraft', items:[
+                          "Personaje: Monstruo marino (Dagon)",
+                          "Objeto: Necronomicon",
+                          "Acontecimiento: Ritual de sacrificio",
+                          "Lugar: Ruinas civilización antigua",
+                          "Personaje: Gente Pez",
+                          "Detalle: Branquias",
+                          "Lugar: Garganta profunda",
+                          "Lugar: En el fondo del mar",
+                          "Aspecto: Pagano",
+                          "Objeto: Símbolo Arcano",
+                          "Lugar: Faro",
+                          "Personaje: Arqueólogo",
+                          "Objeto: Arpón",
+                          "Lugar: Playa",
+                          "Personaje: Párroco local",
+                          "Detalle: Temporal (lluvia y viento)",
+                          "Aspecto: Cenagoso",
+                          "Lugar: Pueblo costero",
+                          "Objeto: Barca de pescador",
+                          "Acontecimiento: Metamorfosis",
+                          "Acontecimiento: Naufragio de un buque",
+                          "Personaje: Marinero",
+                          "Objeto: Estatuilla",
+                          "Acontecimiento: Cefalópodos",
+                          "Personaje: Detective",
+                          "Aspecto: Gomoso",
+                          "Detalle: Ruido de chapoteo",
+                          "Personaje: Escritor de novelas de terror",
+                          "Detalle: Hombres y mujeres desnudos",
+                          "Objeto: Cuchillo",
+                          "Lugar: Buhardilla",
+                          "Lugar: Vieja mansión",
+                          "Personaje: Turista",
+                          "Detalle: Oscuridad",
+                          "Aspecto: Sangriento",
+                          "Lugar: Hotel",
+                          "Acontecimiento: Mordisco",
+                          "Personaje: Agente de la ley"
+                      ],number: 15}
                         ]
     let bags = (fetched.length ? fetched : defaultBags)
     let maxNumber = Math.max(...bags.map(e => e.number))
