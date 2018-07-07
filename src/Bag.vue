@@ -41,24 +41,24 @@
     </div>
     <div
       class="panel-block"
-      v-for="item in items"
-      @dblclick="editItem(item)"
+      v-for="(item, index) in items"
+      @dblclick="editItem(index)"
       v-if="editingBag">
       <span>
         <input
           class="input is-small"
           type="text"
-          v-if="item === editingItem"
+          v-if="index === editingItemIndex"
           @keyup.enter="endEditing(item)"
           @blur="endEditing(item)"
-          v-model="item.name"
+          v-model="items[index]"
         />
-        <label class="label" v-if="item !== editingItem">
-            {{item.name}}
+        <label class="label" v-if="index !== editingItemIndex">
+            {{item}}
         </label>
       </span>
 
-      <span class="is-pulled-right" v-if="item !== editingItem">
+      <span class="is-pulled-right" v-if="index !== editingItemIndex">
         <button class="delete" @click="removeItem(item)">X</button>
       </span>
     </div>
@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       newItem: '',
-      editingItem: {},
+      editingItemIndex: -1,
       editingBag: false,
       randomThing: '',
     }
@@ -99,10 +99,7 @@ export default {
     addItem: function() {
       var itemText = this.newItem.trim();
       if (itemText) {
-        this.items.push({
-          name: itemText,
-          checked: false
-        });
+        this.items.push(itemText);
         this.newItem = "";
       }
     },
@@ -112,19 +109,19 @@ export default {
       this.items.splice(index, 1);
     },
 
-    editItem: function(item) {
-      this.editingItem = item;
+    editItem: function(index) {
+      this.editingItemIndex = index;
     },
 
     endEditing: function(item) {
-      this.editingItem = {};
-      if (item.name.trim() === "") {
+      this.editingItemIndex = -1;
+      if (item.trim() === "") {
         this.removeItem(item);
       }
     },
     random() {
       let rand = this.items[Math.floor(Math.random() * this.items.length)];
-      this.randomThing = rand.name
+      this.randomThing = rand
     },
     remove() {
       this.$emit('onRemove')
