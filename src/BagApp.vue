@@ -10,6 +10,9 @@
         </p>
       </header>
       <div style="padding-left:30px">
+        <button class="button is-info " @click="save()">save</button>
+        <button class="button is-info " @click="init()">Load</button>
+     
         <a @click="addBag">
             <b-icon
             pack="fa"
@@ -37,25 +40,12 @@
 import bag from './Bag.vue'
 
 const STORAGE_KEY = 'rolu_bag_of_many_things'
-const itemStorage = {
-  fetch() {
-    const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    todos.forEach((todo, index) => {
-      todo.id = index
-    })
-    itemStorage.uid = todos.length
-    return todos
-  },
-  save(todos) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-  }
-};
+
 
 export default {
   name: 'bagApp',
   components: {bag},
   data () {
-    let fetched = itemStorage.fetch()
     let defaultBags = [
                        {name:'Movimientos: Master', items:[
                           'Aislar',
@@ -392,12 +382,13 @@ export default {
                           "Personaje: Agente de la ley"
                       ],number: 15}
                         ]
-    let bags = (fetched.length ? fetched : defaultBags)
+    let bags = defaultBags
     let maxNumber = Math.max(...bags.map(e => e.number))
 
     return {
       bags: bags,
-      number: maxNumber
+      number: maxNumber,
+      currentFile: {}
     }
   },
   methods: {
@@ -411,7 +402,38 @@ export default {
       this.$eventHub.$emit('mod-bags', this.bags)
     },
     save(){
-      itemStorage.save(this.bags)
+      let self = this
+      this.currentFile.content = JSON.stringify(this.bags)
+      this.currentFile.name = STORAGE_KEY
+      window.driveService.saveFileRaw(self.currentFile, function(file){
+        self.currentFile = file
+        self.$toast.open({
+            message: `Guardado!`,
+            type: 'is-success'
+        })
+      })
+    },
+    init() {
+      window.driveService.listFiles('rolu', this.loadFile)
+    },
+    loadFile(err, files) {
+      if (files) {
+        let self = this 
+        let tempFile = files[0]
+        self.currentFile = tempFile
+        driveService.loadFileRaw(tempFile, function(file){
+          self.bags = JSON.parse(file.content)
+          self.currentFile = file
+          let maxNumber = Math.max(...self.bags.map(e => e.number)) 
+          self.number = maxNumber
+          self.$toast.open({
+            message: `Listas cargadas!`,
+            type: 'is-success'
+          })
+        })
+      } else {
+        console.log("error________")
+      }
     }
   },
   created() {

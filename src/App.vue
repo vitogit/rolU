@@ -174,7 +174,7 @@ export default {
       }
     },
     initList(err, files) {
-      this.savedFiles = files
+      this.savedFiles = files.filter(e => e.name !== 'rolu_bag_of_many_things');
     },
     savePrompt() {
       if (this.currentFile.id) {
@@ -237,7 +237,6 @@ export default {
   },
   mounted() {
     window.gapi.load('auth2', this.initClient)
-
     this.$eventHub.$on('scene-change', (scene) => {
       this.app.scenes[scene.id] = scene
     })
