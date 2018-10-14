@@ -29,6 +29,7 @@
           @onRemove="removeBag(bag.number)"
           :name="bag.name"
           :items="bag.items"
+          :number="bag.number"
           v-for="(bag, index) in bags"
           :key="index"/>
       </div>
@@ -391,15 +392,31 @@ export default {
       currentFile: {}
     }
   },
+  watch: {
+    bags: function (newBags) {
+      this.$eventHub.$emit('mod-bags', newBags)
+    }
+  },
+  created() {
+    this.$eventHub.$on('mod-bag', (newBag) => {
+      for (const [index, bag] of this.bags.entries()) {
+        if (bag.number == newBag.number) {
+          this.bags[index].name = newBag.name
+          this.bags[index].items = newBag.items 
+          this.$eventHub.$emit('mod-bags', this.bags)
+          break
+        }
+      }
+    })
+    this.$eventHub.$emit('mod-bags', this.bags)
+  },
   methods: {
     addBag() {
       this.number++
       this.bags.push({name:'bag '+this.number, number: this.number})
-      this.$eventHub.$emit('mod-bags', this.bags)
     },
     removeBag(number) {
       this.bags = this.bags.filter(e => e.number !== number);
-      this.$eventHub.$emit('mod-bags', this.bags)
     },
     save(){
       let self = this
@@ -435,9 +452,6 @@ export default {
         console.log("error________")
       }
     }
-  },
-  created() {
-    this.$eventHub.$emit('mod-bags', this.bags)
   }
 }
 </script>

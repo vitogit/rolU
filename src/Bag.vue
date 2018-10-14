@@ -6,11 +6,11 @@
         style="width:45%"
         type="text"
         v-if="editingBag"
-        v-model="name"
+        v-model="mutableName"
       />
       <button class="delete" @click="remove" style="vertical-align:middle">X</button>
       <label class="label"v-if="!editingBag">
-        {{name}}
+        {{mutableName}}
       </label>
       <span class="is-pulled-right">
         <span class="buttons">
@@ -41,7 +41,7 @@
     </div>
     <div
       class="panel-block"
-      v-for="(item, index) in items"
+      v-for="(item, index) in mutableItems"
       @dblclick="editItem(index)"
       v-if="editingBag">
       <span>
@@ -51,7 +51,7 @@
           v-if="index === editingItemIndex"
           @keyup.enter="endEditing(item)"
           @blur="endEditing(item)"
-          v-model="items[index]"
+          v-model="mutableItems[index]"
         />
         <label class="label" v-if="index !== editingItemIndex">
             {{item}}
@@ -74,9 +74,15 @@ export default {
       editingItemIndex: -1,
       editingBag: false,
       randomThing: '',
+      mutableName: this.name,
+      mutableItems: this.items
     }
   },
   props: {
+    number: {
+      type: Number,
+      default: 0,
+    },
     name: {
       type: String,
       default: '',
@@ -86,27 +92,26 @@ export default {
       default: () => [],
     },
   },
-  // watch change for localStorage persistence
   watch: {
-    // items: {
-    //   handler: function(items) {
-    //     itemStorage.save(items)
-    //   },
-    //   deep: true
-    // }
-  },
+    mutableItems: function (newItems) {
+      this.$eventHub.$emit('mod-bag', {number: this.number, name: this.mutableName, items: newItems})
+    },
+    mutableName: function (newName) {
+      this.$eventHub.$emit('mod-bag', {number: this.number, name: newName, items: this.mutableItems})
+    }    
+  },  
   methods: {
     addItem: function() {
       var itemText = this.newItem.trim();
       if (itemText) {
-        this.items.push(itemText);
+        this.mutableItems.push(itemText);
         this.newItem = "";
       }
     },
 
     removeItem: function(item) {
-      var index = this.items.indexOf(item);
-      this.items.splice(index, 1);
+      var index = this.mutableItems.indexOf(item);
+      this.mutableItems.splice(index, 1);
     },
 
     editItem: function(index) {
@@ -120,7 +125,7 @@ export default {
       }
     },
     random() {
-      let rand = this.items[Math.floor(Math.random() * this.items.length)];
+      let rand = this.mutableItems[Math.floor(Math.random() * this.mutableItems.length)];
       this.randomThing = rand
     },
     remove() {
