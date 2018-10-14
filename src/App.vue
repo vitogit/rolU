@@ -175,6 +175,7 @@ export default {
     },
     initList(err, files) {
       this.savedFiles = files.filter(e => e.name !== 'rolu_bag_of_many_things');
+      this.$eventHub.$emit('gdrive-loaded')
     },
     savePrompt() {
       if (this.currentFile.id) {

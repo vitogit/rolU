@@ -408,6 +408,9 @@ export default {
         }
       }
     })
+    this.$eventHub.$on('gdrive-loaded', (newBag) => {
+      this.init()
+    })
     this.$eventHub.$emit('mod-bags', this.bags)
   },
   methods: {
