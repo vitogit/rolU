@@ -146,10 +146,7 @@ export default {
     messages: function () {
       this.newMessage = ''
       let ref = this.$refs.messagesArea
-      console.log("ref.scrollTop________",ref.scrollTop)
       ref.scrollTop = ref.scrollHeight
-      console.log("ref.scrollTop2________",ref.scrollTop)
-      
     }
   },
   methods: {
