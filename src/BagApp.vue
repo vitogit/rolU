@@ -73,7 +73,7 @@ export default {
       }
     })
     this.$eventHub.$on('gdrive-loaded', (newBag) => {
-      this.init()
+      // this.init()
     })
     this.$eventHub.$emit('mod-bags', this.bags)
   },
@@ -86,9 +86,15 @@ export default {
       this.bags = this.bags.filter(e => e.number !== number);
     },
     save(){
+      window.driveService.listFiles(STORAGE_KEY, this.saveFile)
+    },
+    saveFile(err, files){
       let self = this
       this.currentFile.content = JSON.stringify(this.bags)
       this.currentFile.name = STORAGE_KEY
+      if (files[0]) {
+        this.currentFile.id = files[0].id
+      }
       window.driveService.saveFileRaw(self.currentFile, function(file){
         self.currentFile = file
         self.$toast.open({
@@ -98,7 +104,7 @@ export default {
       })
     },
     init() {
-      // window.driveService.listFiles('rolu', this.loadFile)
+      window.driveService.listFiles('rolu', this.loadFile)
     },
     loadFile(err, files) {
       if (files) {
