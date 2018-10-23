@@ -10,6 +10,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "buefy": "^0.6.3",
     "gdrive-sync-js": "^0.3.5",
     "vue": "^2.5.11",

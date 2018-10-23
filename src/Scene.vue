@@ -43,7 +43,9 @@
                     </button>
                     <b-dropdown-item  @click="rollMove(index)" v-for="move, index in moves" :key="index">{{move['label']}}</b-dropdown-item>
                 </b-dropdown>
-
+                <button class="button is-info" @click="wikiArticle">
+                    <span>Wiki</span>
+                </button>
                 <div class="select">
                   <select v-model="currentModificator">
                     <option v-for="i in range(-3, 3)" v-text="i"></option>
@@ -126,6 +128,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'scene',
   props: ['name', 'messages'],  
@@ -262,6 +266,22 @@ export default {
       this.newMessage = ''
       message = this.addTextStyle(message)
       this.messages.push(message)
+    },
+    wikiArticle() {
+    axios.get("https://es.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts&exchars=300&format=json&origin=*")
+    .then(data => {
+      console.log("data________",data)
+      let pages = data.data.query.pages
+      let article = pages[Object.keys(pages)[0]].extract.replace(/<(?:.|\n)*?>/gm, '');
+      console.log("article________",article)
+      let message = this.newMessage +' ['+article+']'
+      this.newMessage = ''
+      message = this.addTextStyle(message)
+      this.messages.push(message)
+    })
+    .catch(error => {
+      console.log(error);
+    })           
     }
   },
   created() {
