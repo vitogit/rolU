@@ -29,7 +29,12 @@
           </footer>
           <footer class="card-footer" style="padding:10px">
             <div class="field">
-
+                <b-dropdown position="is-top-right" hoverable>
+                    <button class="button is-info" slot="trigger">
+                        <span>Solo</span>
+                    </button>
+                    <b-dropdown-item  @click="rollMove('solo', index)" v-for="move, index in this.solo" :key="index">{{move['label']}}</b-dropdown-item>
+                </b-dropdown>
                 <b-dropdown position="is-top-right" hoverable v-for="bag, index in bags">
                     <button class="button is-info" slot="trigger">
                         <span>{{index}}</span>
@@ -41,7 +46,7 @@
                     <button class="button is-info" slot="trigger">
                         <span>Jugador</span>
                     </button>
-                    <b-dropdown-item  @click="rollMove(index)" v-for="move, index in moves" :key="index">{{move['label']}}</b-dropdown-item>
+                    <b-dropdown-item  @click="rollMove('moves', index)" v-for="move, index in moves" :key="index">{{move['label']}}</b-dropdown-item>
                 </b-dropdown>
                 <button class="button is-info" @click="wikiArticle">
                     <span>Wiki</span>
@@ -51,7 +56,6 @@
                     <option v-for="i in range(-3, 3)" v-text="i"></option>
                   </select>
                 </div>
-
             </div>
           </footer>
         </div>
@@ -72,7 +76,7 @@
           <div class="panel">
             <div class="panel-block">
               <p class="control">
-                <input @keyup.enter="addCharacter" class="input" type="text" placeholder="Agregar Personaje">
+                <input v-model="newCharacter" @keyup.enter="addCharacter" class="input" type="text" placeholder="Agregar Personaje">
               </p>
             </div>
             <a @click="openModal(c)" class="panel-block" v-for="c in characters">
@@ -96,7 +100,7 @@
           <div class="panel">
             <div class="panel-block">
               <p class="control">
-                <input @keyup.enter="addAspect" class="input" type="text" placeholder="Agregar aspecto">
+                <input v-model="newAspect" @keyup.enter="addAspect" class="input" type="text" placeholder="Agregar aspecto">
               </p>
             </div>
             <a @click="openModal(a)" class="panel-block" v-for="a in aspects">
@@ -109,7 +113,7 @@
        <div class="card">
           <header class="card-header">
             <p class="card-header-title">
-              {{currentElement.name}}
+               <input v-model="currentElement.name" class="input" type="text" >
             </p>
           </header>
           <div class="card-content">
@@ -118,8 +122,8 @@
             </div>
           </div>
           <footer class="card-footer">
-            <a href="#" class="card-footer-item">Grabar</a>
-            <a href="#" class="card-footer-item">Eliminar</a>
+            <a @click="closeModal()" class="card-footer-item">Grabar</a>
+            <a @click="deleteElement(currentElement)" class="card-footer-item">Eliminar</a>
           </footer>
         </div>
       </b-modal>
@@ -143,6 +147,8 @@ export default {
       bags: {},
       currentModificator: 0,
       messageMousePosition: -1,
+      newCharacter: '',
+      newAspect: ''
     }
   },
   watch: {
@@ -159,12 +165,14 @@ export default {
       if (name == '')
         return
       this.characters.push({name: name, data: ''})
+      this.newCharacter = ''
     },
     addAspect(event) {
       let name = event.target.value
       if (name == '')
         return
       this.aspects.push({name: name, data: ''})
+      this.newAspect = ''
     },
     addMessage() {
       if (this.newMessage == '')
@@ -181,11 +189,27 @@ export default {
       this.isModalActive = true
       this.currentElement = element
     },
+    closeModal() {
+      this.isModalActive = false
+      this.currentElement = { name: '', data: '' }
+    },
+    deleteElement(element) {
+      this.currentElement = { name: '', data: '' }
+      this.aspects.splice(this.aspects.indexOf(element), 1);
+      this.characters.splice(this.characters.indexOf(element), 1);
+
+      console.log('this.aspects', this.aspects)
+      console.log('ithis.characters', this.characters)
+
+      this.closeModal() 
+    },
     findBag(bagName) {
+      console.log('findbag bagname', bagName)
       let bag = {}
       Object.keys(this.bags).forEach(categoryName => {
         let bags = this.bags[categoryName];
         Object.keys(bags).forEach(index => {
+          console.log('bags[index].name', bags[index].name)
           if (bagName == bags[index].name) {
             bag = bags[index]
             return
@@ -194,20 +218,22 @@ export default {
       });
       return bag
     },
-    //If bagName is black & white then it will pull 1 thing from the first and 1 thing from the second
-    //If bagName is things 2 it will pull 2 things
+    //If bagName is 'bag: black & white' then it will pull 1 thing from the first and 1 thing from the second
+    //If bagName is `things 2` it will pull 2 things
     getFromBag(bag) {
       let result = ''
       let count = 1
-      let hasGroup = bag.name.match(/.*: (.*) & (.*)/)
+      let bigBagName = bag.name
+      console.log(bigBagName)
+      let hasGroup = bigBagName.includes('&')
       if (hasGroup) {
-        let bagName1 = hasGroup[1]
-        let bagName2 = hasGroup[2]
-        let bag1 = this.findBag(bagName1)
-        let bag2 = this.findBag(bagName2)
-        let element1 = bag1.items[Math.floor(Math.random() * bag1.items.length)];
-        let element2 = bag2.items[Math.floor(Math.random() * bag2.items.length)];
-        result = element1 + ' / ' +element2
+        let bagNames = bigBagName.split(':')[1].split('&')
+        for (let bagName of bagNames ) {
+          bagName = bigBagName.split(':')[0]+': '+bagName.trim()
+          let bag = this.findBag(bagName)
+          let element = bag.items[Math.floor(Math.random() * bag.items.length)];
+          result += element + ' / '
+        }
       } else {
         let hasCounter = bag.name.match(/ \d+$/)
         if (hasCounter) {
@@ -249,17 +275,24 @@ export default {
     range(start, end) {
       return Array(end - start + 1).fill().map((_, idx) => start + idx)
     },
-    rollMove(moveName) {
-
-      let move = this.moves[moveName]
-      let result =  this.randomNumber(6) + this.randomNumber(6) + parseInt(this.currentModificator)
-      let message = this.newMessage +' ['+result+']'
+    rollMove(moves, moveName) {
+      console.log('moves', moves)
+      if (moves == "solo") {
+        moves = this.solo
+      } else {
+        moves = this.moves
+      }
+      let move = moves[moveName]
+      let dice1 = this.randomNumber(6)
+      let dice2 = this.randomNumber(6)
+      let result =  dice1 + dice2 + parseInt(this.currentModificator)
+      let message = `[${dice1}, ${dice2}]+${parseInt(this.currentModificator)} = ${result} ${this.newMessage}`
 
       if (result >= 10) {
         message += move['hit']
-      } else if (result >=6) {
+      } else if (result >=7) {
         message += move['partial']
-      } else {
+      } else  if (result <= 6){
         message += move['miss']
       }
 
@@ -270,10 +303,8 @@ export default {
     wikiArticle() {
     axios.get("https://es.wikipedia.org/w/api.php?action=query&generator=random&grnnamespace=0&prop=extracts&exchars=300&format=json&origin=*")
     .then(data => {
-      console.log("data________",data)
       let pages = data.data.query.pages
       let article = pages[Object.keys(pages)[0]].extract.replace(/<(?:.|\n)*?>/gm, '');
-      console.log("article________",article)
       let message = this.newMessage +' ['+article+']'
       this.newMessage = ''
       message = this.addTextStyle(message)
@@ -285,6 +316,50 @@ export default {
     }
   },
   created() {
+      this.solo = {
+                    danger: {
+                      label: 'Enfrentarse al peligro',
+                      hit: ['+1 momentum'],
+                      partial: ['Exito parcial con un costo, salud, espiritu, o Soft move (+3 en la tirada)'],
+                      miss: ['Te hacen daño, pierdes la iniciativa o algo malo pasa. Hard move']
+                    },
+                    advance: {
+                      label: 'Avanzar',
+                      hit: ['Marcar progreso. El objetivo de la escena es algo positivo para el PJ. Si lo logras marca progreso'],
+                      partial: ['El objetivo de la escena es superar una complicacion. Si superas marca progreso'],
+                      miss: ['Pierdes salud, espiritu o aliado. Debes sobrevivir a un peligro inminente. Tirar un hard move']
+                    },
+                    fight: {
+                      label: 'Pelea',
+                      hit: ['Haces +1 daño y tienes la iniciativa. Puedes elegir terminar la pelea'],
+                      partial: ['Elige hacer daño o continuar con la iniciativa'],
+                      miss: ['Te hacen daño, pierdes la iniciativa o algo malo pasa. Hard move']
+                    },
+                    finish_fight: {
+                      label: 'Terminar pelea',
+                      hit: ['Dominas completamente'],
+                      partial: ['Ganas con un costo. -1 daño, espiritu, situacion empeora'],
+                      miss: ['Pierdes. Hard move']
+                    },
+                    advantage: {
+                      label: 'Ganar ventaja',
+                      hit: ['+1 momentum +1 proxima tirada'],
+                      partial: ['+1 momentum'],
+                      miss: ['Hard move']
+                    },
+                    info: {
+                      label: 'Recabar informacion',
+                      hit: ['3 preguntas'],
+                      partial: ['1 pregunta'],
+                      miss: ['1 pregunta pero Hard move']
+                    },
+                    talk: {
+                      label: 'Convencer',
+                      hit: ['Lo logras'],
+                      partial: ['Lo logras por algo a cambio'],
+                      miss: ['No. Hard move']
+                    }
+      }
       this.moves = {
                     general: {
                       label: 'General',
@@ -312,7 +387,7 @@ export default {
                     },
                     idea: {
                       label: 'Idea',
-                      hit: ['Averiguas un conocimiento oculto o sabes que es, que signigica y a que estar atento.'],
+                      hit: ['Averiguas un conocimiento oculto o sabes que es, que significa y a que estar atento.'],
                       partial: ['Sabes lo que es o como funciona pero vagamente'],
                       miss: ['Fallas']
                     },

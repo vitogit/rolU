@@ -1,4 +1,72 @@
+
 [
+  {
+    "name": "Solo Cards: Descripcion & Accion & Sujeto & Star Wars",
+    "items": [],
+    "number": 27
+  },
+  {
+    "name": "Solo Cards: Descripcion",
+    "items": [
+      "Anormal", "Frio", "Dañado", "Enorme", "Fuerte", "Caliente", "Pequeño", "Historico", "Moderno", "Debil", "Curioso"
+    ],
+    "number": 23
+  },
+  {
+    "name": "Solo Cards: Accion",
+    "items": [
+      "Comunicar", "perseguir", "Encontrar", "Liberar", "Llevar", "Detener", "Escapar", "Dañar", "Controlar", "transformar", "abrir"
+    ],
+    "number": 24
+  },
+  {
+    "name": "Solo Cards: Sujeto",
+    "items": [
+      "Villano", "enemigos extras", "enemigo vehiculos", "enemigo defensas", "naturaleza clima", "terreno", "informacion", "negociacion", "grupo", "aliado", "personaje"
+    ],
+    "number": 25
+  },
+  {
+    "name": "Solo Cards: Star Wars",
+    "items": [
+      "Lado oscuro", "lord sith", "estrella de la muerte", "nave destructora", "cazarecompensa", "artefacto", "templo",  "la fuerza", "jedi", "lado luz"
+    ],
+    "number": 26
+  },
+  {
+    "name": "Movimientos: Hard Move",
+    "items": [
+      "Use a monster, danger, or location move",
+      "Turn their move back on them",
+      "Use up their resources or deal damage",
+      "Show a downside to their class, race, or equipment",
+      "Separate them",
+      "Reveal an unwelcome truth",
+      "Show signs of an approaching threat",
+      "Put someone in a spot",
+      "Tell them the requirements or consequences and ask",
+      "Offer an opportunity, with or without cost",
+      "Give an opportunity that fits a class’ abilities"
+    ],
+    "number": 1
+  },
+  {
+    "name": "Movimientos: Premio",
+    "items": [
+      "puedes tener la ayuda de un aliado +npc",
+      "consigues un recurso de gran ayuda +1 supply",
+      "consigues una pista imporante",
+      "Puedes lucir tus habilidades +2 holds",
+      "Una sorpresa agradable",
+      "Eleva tu espiritu o salud +1",
+      "Avanzas con rapidez +2 momentum",
+      "Logras eliminar un obstaculo de manera facil",
+      " Tienes una ventaja +1 en la proxima tirada",
+      " Avanzas tu mision +1",
+      " consigues algo fundamental que reduce el peligro de tu mision"
+    ],
+    "number": 2
+  },
   {
     "name": "Movimientos: Master",
     "items": [
