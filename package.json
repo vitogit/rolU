@@ -11,7 +11,7 @@
     "publish": "npm run build && rm -rf docs; cp -r dist docs; cp index.html docs; cp -r ./node_modules/gdrive-sync-js/lib/ docs ;sed -i '' 's/\\/dist\\///g' docs/index.html ;sed -i '' 's/\\.\\.\\/node_modules\\/gdrive-sync-js\\/lib\\///g' docs/index.html ; "
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "buefy": "^0.6.3",
     "gdrive-sync-js": "^0.3.5",
     "vue": "^2.5.11",
