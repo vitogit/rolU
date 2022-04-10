@@ -230,7 +230,7 @@ export default {
   created() {
     //https://www.googleapis.com/auth/drive.appdata
     const SCOPES = 'https://www.googleapis.com/auth/drive.file'
-    const CLIENT_ID = '787907413982-ek7jje54nljmljno0rja381lg5hsan6h.apps.googleusercontent.com'
+    const CLIENT_ID = '1090834378955-vcb77ec7mru0iab0uvs9k17eds73hk6m.apps.googleusercontent.com'
     const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
 
     window.loginService = new LoginService(CLIENT_ID, SCOPES, DISCOVERY_DOCS)
